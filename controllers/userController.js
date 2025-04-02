@@ -27,24 +27,11 @@ const updateProfile = async (req, res, next) => {
 
     //Check if the profile already exists for the user with the userId in the cookie
 
-    let updateProfile = await profile.findOne({ userId });
-
-    if (updateProfile) {
-      Object.assign(updateProfile, updates);
-      await updateProfile.save({ new: true, runValidators: true });
-    } else {
-      updateProfile = new profile({ userId, ...updates });
-    }
-    // let profileExits = await profile.findOne({ userId });
-
-    // if (profileExits) {
-    //   Object.assign(profileExits, req.body);
-    //   await profileExits.save();
-    // } else {
-    //   profileExists = new profile({userId, ...req.body})
-    // }
-
-    //Only updates the data received in the body//
+    let updateProfile = await profile.findOneAndUpdate(
+      { userId },
+      { $set: updates },
+      { new: true, runValidators: true, upsert: true }
+    );
 
     return res.status(200).json({ success: true, message: "Profile updation successful", updateProfile });
   } catch (error) {
