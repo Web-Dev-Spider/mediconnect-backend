@@ -2,6 +2,10 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
 const User = require("../models/userModel");
+const DoctorProfile = require("../models/doctorModel");
+const PatientProfile = require("../models/patientModel");
+const AdminProfile = require("../models/adminModel");
+
 const generateJwtToken = require("../utilities/generateJWT");
 const { JWT_SECRET } = require("../config/envConfig");
 
@@ -12,6 +16,28 @@ const signUp = async (req, res, next) => {
     //Validations are done in the user schama and schema.pre function
     const { userName, email, phone, password, role } = req.body;
     const newUser = new User({ userName, email, phone, password, role });
+
+    // console.log("New user just after created using the User instance", newUser);
+
+    //**************This logic has changed */
+
+    // let profile;
+
+    // if (role === "admin") {
+    //   profile = new AdminProfile({ userId: newUser._id });
+    // } else if (role === "doctor") {
+    //   profile = new DoctorProfile({ userId: newUser._id });
+    // } else if (role === "patient") {
+    //   profile = new PatientProfile({ userId: useUser._id });
+    // } else {
+    //   console.log("Role is invalid");
+    //   return res.status(403).json({ success: false, message: "Role is invalid" });
+    // }
+
+    // await profile.save();
+
+    //**************This logic has changed */
+
     await newUser.save({ new: true });
 
     // console.log(`\n Parameters for creating tokens \n userId: ${newUser._id} \n Role: ${newUser.role}`);

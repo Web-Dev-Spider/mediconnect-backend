@@ -40,21 +40,37 @@ const userSchema = new mongoose.Schema({
     enum: { values: ["admin", "doctor", "patient"], message: "Invalid role! must be a 'patient', 'doctor' or 'admin'" },
     default: "patient",
   },
+  profileId: {
+    type: mongoose.Schema.Types.ObjectId,
+    refPath: "roleProfile",
+    default: null,
+  },
+  roleProfile: {
+    type: String,
+    enum: ["AdminProfile", "DoctorProfile", "PatientProfile"],
+    default: null,
+  },
 });
+
+userSchema.methods.hashPassword = async function () {
+  const salt = await bcrypt.genSalt(10);
+  this.password = await bcrypt.hash(this.password, salt);
+};
 
 userSchema.pre("save", async function (next) {
   try {
     if (!this.isModified("password")) {
       return next();
     }
-    const salt = await bcrypt.genSalt(10);
-    this.password = await bcrypt.hash(this.password, salt);
+    // const salt = await bcrypt.genSalt(10);
+    // this.password = await bcrypt.hash(this.password, salt);
+    await this.password();
     next();
   } catch (error) {
     next(error);
   }
 });
 
-const User = new mongoose.model("users", userSchema);
+const User = new mongoose.model("User", userSchema);
 
 module.exports = User;
