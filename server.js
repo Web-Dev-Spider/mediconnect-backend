@@ -10,6 +10,7 @@ const connectToDatabase = require("./config/database");
 
 const userRouter = require("./routes/userRouter");
 const authRouter = require("./routes/authRouter");
+const adminRouter = require("./routes/adminRouter");
 // const doctorRouter = require("./routes/doctorRouter");
 
 const app = express();
@@ -23,6 +24,7 @@ if (NODE_ENV === "development") {
 
 app.use("/api/auth", authRouter);
 app.use("/api/users", userRouter);
+app.use("/api/admin", adminRouter);
 // app.use("/api/doctors", doctorRouter);
 
 app.use((req, res, next) => {
