@@ -25,7 +25,7 @@ const authenticate = async (req, res, next) => {
 };
 
 const authorize = (roles) => {
-  console.log("Roles received", roles);
+  // console.log("Roles received", roles);
   return (req, res, next) => {
     if (!roles.includes(req.user.role)) {
       return res.status(403).json({ success: "false", message: "Access denied, Insufficient Permission." });

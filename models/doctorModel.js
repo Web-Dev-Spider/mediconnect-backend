@@ -32,7 +32,7 @@ const doctorSchema = new mongoose.Schema(
       //   required: [true, "Fees is required"],
     },
     availability: {
-      type: String,
+      type: [String],
       //   required: [true, "Doctor availability is required"],
       enum: { values: ["Sunday", "Monday", "Tuesday"], message: "Avalability should be selected" },
     },

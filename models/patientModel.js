@@ -18,11 +18,12 @@ const patientSchema = new mongoose.Schema({
   },
   gender: {
     type: String,
-    enum: ['male, "female', "other"],
+    enum: ["male", "female", "other"],
   },
   address: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Address",
+    default: null,
   },
   emergencyContact: {
     name: {
@@ -37,6 +38,6 @@ const patientSchema = new mongoose.Schema({
   },
 });
 
-const PatientProfile = mongoose.model("PatientProfile", patientSchema);
+const PatientProfile = mongoose.model("Patient", patientSchema);
 
 module.exports = PatientProfile;

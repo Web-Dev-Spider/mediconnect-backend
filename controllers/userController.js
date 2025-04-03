@@ -12,7 +12,7 @@ const updateProfile = async (req, res, next) => {
     const updates = req.body;
 
     //Find the user and profile id of the user
-    const user = await User.findById(userId);
+    const user = await User.findById(userId).select("-password");
     if (!user) {
       return res.status(404).json({ success: false, message: "User not found" });
     }
@@ -28,13 +28,13 @@ const updateProfile = async (req, res, next) => {
 
     //Check if the profile already exists for the user with the userId in the cookie
 
-    let updateProfile = await profile.findOneAndUpdate(
+    let updatedProfile = await profile.findOneAndUpdate(
       { userId },
       { $set: updates },
       { new: true, runValidators: true, upsert: true }
     );
 
-    return res.status(200).json({ success: true, message: "Profile updation successful", updateProfile });
+    return res.status(200).json({ success: true, message: "Profile updation successful", user, updatedProfile });
   } catch (error) {
     console.log(error);
     next(error);
@@ -47,38 +47,40 @@ const updateAddress = async (req, res, next) => {
     const updates = req.body;
 
     //find which profile to update based on the role
-    const profileModel =
+    const ProfileModel =
       role === "doctor" ? DoctorProfile : role === "patient" ? PatientProfile : role === "admin" ? AdminProfile : null;
 
     // if no valid role.. then exit with message
-    if (!profileModel) {
+    if (!ProfileModel) {
       return res.status(403).json({ success: false, message: "Invalid role" });
     }
-    // console.log("profileModel:", profileModel);
-    // console.log("typeof profileModel:", typeof profileModel);
-    // console.log("profileModel.prototype:", profileModel.prototype);
-
-    let profile = await profileModel.findOne({ userId });
+    console.log("finding profile");
+    let profile = await ProfileModel.findOne({ userId });
+    console.log("Truing to log error");
     // let user = await profileModel.findOne({ userId });
     console.log(profile);
+    if (!profile) {
+      return res.status(404).json({ success: false, message: "Profile not found!" });
+    }
 
     let address;
 
     if (profile.address) {
-      console.log("address is there");
+      console.log("address is there", profile.address);
 
       //If address found update it
       address = await Address.findByIdAndUpdate(profile.address, { $set: updates }, { new: true, runValidators: true });
+      await address.save();
+      console.log(address);
     } else {
       console.log("address is  not there");
-      address = new Address({ ...updates });
+      address = new Address(updates);
       console.log("Address", address);
+      await address.save();
+      profile.address = address._id;
+      await profile.save();
     }
-
-    await address.save();
-
-    profile.address = address._id;
-    await profile.save();
+    res.status(200).json({ success: true, message: "Address updated successfully", profile, address });
   } catch (error) {
     console.log(error);
     next(error);
