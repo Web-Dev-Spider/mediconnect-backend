@@ -56,7 +56,7 @@ const updateAddress = async (req, res, next) => {
     }
     console.log("finding profile");
     let profile = await ProfileModel.findOne({ userId });
-    console.log("Truing to log error");
+
     // let user = await profileModel.findOne({ userId });
     console.log(profile);
     if (!profile) {

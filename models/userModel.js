@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 
-const restrictedUserNames = ["system", "root", "superuser", "admin", "test"];
+const restrictedUserNames = ["system", "root", "superuser", "test"];
 const validators = require("../utilities/validators");
 const userSchema = new mongoose.Schema({
   userName: {
@@ -9,6 +9,7 @@ const userSchema = new mongoose.Schema({
     required: [true, "Name is required"],
     minlength: [3, "Minimum 3 characters needed"],
     maxlength: [20, "Name can not exceed more than 20 characters"],
+    unique: true,
     validate: {
       validator: function (value) {
         return !restrictedUserNames.includes(value.toLowerCase());
@@ -37,7 +38,7 @@ const userSchema = new mongoose.Schema({
   role: {
     type: String,
     required: [true, "Role is required"],
-    enum: { values: ["admin", "doctor", "patient"], message: "Invalid role! must be a 'patient', 'doctor' or 'admin'" },
+    enum: { values: ["admin", "doctor", "patient"], message: "Invalid role! must be a 'patient', 'doctor'" },
     default: "patient",
   },
   profileId: {

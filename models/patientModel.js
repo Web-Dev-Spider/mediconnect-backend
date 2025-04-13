@@ -1,4 +1,4 @@
-const { maxLength } = require("cookieparser");
+const { maxLength } = require("cookie-parser");
 const mongoose = require("mongoose");
 
 const patientSchema = new mongoose.Schema({
