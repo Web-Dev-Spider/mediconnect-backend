@@ -1,4 +1,4 @@
-const errorHandler = (err, req, next) => {
+const errorHandler = (err, req, res, next) => {
   console.log("\nIn the error handler\n");
   console.log("Error received at Error handler", err);
   //handling error wich have no status code and messages...//all unhandled errors
@@ -27,8 +27,7 @@ const errorHandler = (err, req, next) => {
     message = `The ${field} ${value} is already taken. Please choose another.`;
   }
 
-  res.status(400).json({ success: false, message });
-  // next();
+  res.status(statusCode).json({ success: false, message });
 };
 
 module.exports = errorHandler;

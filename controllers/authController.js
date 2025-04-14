@@ -17,27 +17,6 @@ const signUp = async (req, res, next) => {
     const { userName, email, phone, password, role } = req.body;
     const newUser = new User({ userName, email, phone, password, role });
 
-    // console.log("New user just after created using the User instance", newUser);
-
-    //**************This logic has changed */
-
-    // let profile;
-
-    // if (role === "admin") {
-    //   profile = new AdminProfile({ userId: newUser._id });
-    // } else if (role === "doctor") {
-    //   profile = new DoctorProfile({ userId: newUser._id });
-    // } else if (role === "patient") {
-    //   profile = new PatientProfile({ userId: useUser._id });
-    // } else {
-    //   console.log("Role is invalid");
-    //   return res.status(403).json({ success: false, message: "Role is invalid" });
-    // }
-
-    // await profile.save();
-
-    //**************This logic has changed */
-
     await newUser.save({ new: true });
 
     // console.log(`\n Parameters for creating tokens \n userId: ${newUser._id} \n Role: ${newUser.role}`);
@@ -61,6 +40,7 @@ const signIn = async (req, res, next) => {
 
     //Get all fields
     const { userName, email, password } = req.body;
+    console.log(req.body);
     if ((!userName || email) && !password) {
       return res.status(400).json({ success: false, message: "All fields are required" });
     }
