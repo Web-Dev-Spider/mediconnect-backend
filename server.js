@@ -22,7 +22,7 @@ app.use(cookieParser());
 // app.options("*", cors()); // handles preflight requests
 app.use(
   cors({
-    origin: "https://mediconnect-zeta.vercel.app/",
+    origin: "https://mediconnect-frontend-xi.vercel.app",
 
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
