@@ -23,6 +23,7 @@ app.use(cookieParser());
 app.use(
   cors({
     origin: "https://mediconnect-zeta.vercel.app/",
+
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],

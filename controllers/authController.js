@@ -63,10 +63,23 @@ const signIn = async (req, res, next) => {
 
     //Save it to cookies
     res.cookie("token", token);
-    const decode = jwt.verify(token, JWT_SECRET);
-    console.log("Token ", decode);
 
-    res.status(200).json({ success: true, message: "User signed in successfully", userExists });
+    // const decode = jwt.verify(token, JWT_SECRET);
+    // console.log("Token ", decode);
+
+    let redirectTo;
+
+    if (userExists.role === "admin") {
+      redirectTo = "/admin/dashboard";
+    } else if ((userExists.role = "doctor")) {
+      redirectTo = "/doctor/dashboard";
+    } else if (userExists.role === "patient") {
+      redirectTo = "/patient/dashboard";
+    } else {
+      redirectTo = "/";
+    }
+
+    res.status(200).json({ success: true, message: "User signed in successfully", userExists, redirectTo });
   } catch (error) {
     // console.log(error);
     next(error);
