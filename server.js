@@ -13,6 +13,7 @@ const userRouter = require("./routes/userRouter");
 const authRouter = require("./routes/authRouter");
 const adminRouter = require("./routes/adminRouter");
 const doctorRouter = require("./routes/doctorRouter");
+const ServerlessHttp = require("serverless-http");
 // const doctorRouter = require("./routes/doctorRouter");
 
 const app = express();
@@ -29,7 +30,7 @@ app.use(
     allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
-
+connectToDatabase();
 if (NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
@@ -54,11 +55,13 @@ app.use((req, res, next) => {
 
 app.use(errorHandler);
 
-app.listen(PORT, async () => {
-  await connectToDatabase();
-  try {
-    console.log(`App started working at PORT ${PORT}`);
-  } catch (error) {
-    console.log("Something went wrong", error.message);
-  }
-});
+// app.listen(PORT, async () => {
+//   await connectToDatabase();
+//   try {
+//     console.log(`App started working at PORT ${PORT}`);
+//   } catch (error) {
+//     console.log("Something went wrong", error.message);
+//   }
+// }
+// );
+module.exports = ServerlessHttp(app);
