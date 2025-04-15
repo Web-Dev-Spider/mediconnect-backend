@@ -15,5 +15,11 @@
       "dest": "server.js",
       "methods": ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"]
     }
-  ]
+  ],
+  "functions": {
+    "api/auth/*.js": {
+      "memory": 3008,
+      "maxDuration": 30
+    }
+  }
 }
