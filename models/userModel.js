@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 
 const restrictedUserNames = ["system", "root", "superuser", "test"];
 const validators = require("../utilities/validators");
