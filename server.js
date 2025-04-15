@@ -54,11 +54,18 @@ app.use((req, res, next) => {
 
 app.use(errorHandler);
 
-app.listen(PORT, async () => {
-  await connectToDatabase();
-  try {
-    console.log(`App started working at PORT ${PORT}`);
-  } catch (error) {
-    console.log("Something went wrong", error.message);
-  }
-});
+try {
+  connectToDatabase();
+} catch (error) {
+  console.log(error);
+}
+// app.listen(PORT, async () => {
+//   await connectToDatabase();
+//   try {
+//     console.log(`App started working at PORT ${PORT}`);
+//   } catch (error) {
+//     console.log("Something went wrong", error.message);
+//   }
+// });
+
+module.exports = serverless(app);
