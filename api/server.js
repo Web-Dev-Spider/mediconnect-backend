@@ -41,7 +41,7 @@ app.use("/api/users", userRouter);
 app.use("/api/admin", adminRouter);
 app.use("/api/doctor", doctorRouter);
 app.get("/", (req, res) => {
-  res.status(200).json({ message: "Welcome to MediConnect" });
+  res.status(200).json({ message: "Welcome to MediConnect serverless-app" });
 });
 
 app.use((req, res, next) => {
