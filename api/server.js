@@ -3,18 +3,20 @@ const express = require("express");
 const morgan = require("morgan");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
+const serverless = require("serverless-http");
 
-const { PORT, NODE_ENV, FRONTEND_URL } = require("./config/envConfig");
+const { PORT, NODE_ENV, FRONTEND_URL } = require("../config/envConfig");
 
-const errorHandler = require("./middlewares/errorMiddleware");
-const connectToDatabase = require("./config/database");
+const errorHandler = require("../middlewares/errorMiddleware");
 
-const userRouter = require("./routes/userRouter");
-const authRouter = require("./routes/authRouter");
-const adminRouter = require("./routes/adminRouter");
-const doctorRouter = require("./routes/doctorRouter");
+const connectToDatabase = require("../config/database");
+
+const userRouter = require("../routes/userRouter");
+const authRouter = require("../routes/authRouter");
+const adminRouter = require("../routes/adminRouter");
+const doctorRouter = require("../routes/doctorRouter");
 // const doctorRouter = require("./routes/doctorRouter");
-
+connectToDatabase();
 const app = express();
 
 app.use(express.json());
@@ -54,11 +56,5 @@ app.use((req, res, next) => {
 
 app.use(errorHandler);
 
-app.listen(PORT, async () => {
-  await connectToDatabase();
-  try {
-    console.log(`App started working at PORT ${PORT}`);
-  } catch (error) {
-    console.log("Something went wrong", error.message);
-  }
-});
+module.exports = app;
+module.exports.handler = serverless(app);
