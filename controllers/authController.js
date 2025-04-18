@@ -41,7 +41,7 @@ const signIn = async (req, res, next) => {
     //Get all fields
     const { userName, email, password } = req.body;
     console.log(req.body);
-    if ((!userName || email) && !password) {
+    if ((!userName || !email) && !password) {
       return res.status(400).json({ success: false, message: "All fields are required" });
     }
 
