@@ -4,8 +4,8 @@ const { authenticate, authorize } = require("../middlewares/authenticateMiddlewa
 const adminRouter = require("express").Router();
 
 adminRouter.get("/users", authenticate, authorize(["admin"]), getAllUsers);
-adminRouter.get("/users/:userId", authenticate, authorize(["admin"]), getUser);
-adminRouter.patch("/users/:userId", authenticate, authorize(["admin"]), editUser);
+// adminRouter.get("/users/:userId", authenticate, authorize(["admin"]), getUser);
+// adminRouter.patch("/users/:userId", authenticate, authorize(["admin"]), editUser);
 adminRouter.delete("/users/:userId", authenticate, authorize(["admin"]), deleteUser);
 
 module.exports = adminRouter;

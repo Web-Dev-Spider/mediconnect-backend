@@ -19,7 +19,7 @@ userRouter.get("/patient", authenticate, authorize(["patient"]), (req, res, next
   res.send("Welcome patient");
 });
 
-userRouter.post("/profile", authenticate, authorize(["admin", "doctor", "patient"]), updateProfile);
-userRouter.post("/address", authenticate, authorize(["admin", "doctor", "patient"]), updateAddress);
+// userRouter.post("/profile", authenticate, authorize(["admin", "doctor", "patient"]), updateProfile);
+// userRouter.post("/address", authenticate, authorize(["admin", "doctor", "patient"]), updateAddress);
 
 module.exports = userRouter;

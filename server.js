@@ -20,15 +20,31 @@ const app = express();
 app.use(express.json());
 app.use(cookieParser());
 // app.options("*", cors()); // handles preflight requests
+const allowedOrigins = ["https://mediconnect-frontend-xi.vercel.app", "http://localhost:5173", "http://localhost:3000"];
+
 app.use(
   cors({
-    origin: "https://mediconnect-frontend-xi.vercel.app",
-
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
+
+// app.use(
+//   cors({
+//     origin: ["http://localhost:5173", "https://mediconnect-frontend-xi.vercel.app"],
+//     credentials: true,
+//     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+//     allowedHeaders: ["Content-Type", "Authorization"],
+//   })
+// );
 
 if (NODE_ENV === "development") {
   app.use(morgan("dev"));
